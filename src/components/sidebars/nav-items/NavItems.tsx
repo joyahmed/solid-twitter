@@ -1,6 +1,5 @@
 import { AiOutlineHome } from 'solid-icons/ai';
 import { CgMoreO, CgProfile } from 'solid-icons/cg';
-import { FiMoreHorizontal } from 'solid-icons/fi';
 import { IoNotificationsCircleOutline } from 'solid-icons/io';
 import { RiMapCompassDiscoverLine } from 'solid-icons/ri';
 import { Component, For } from 'solid-js';

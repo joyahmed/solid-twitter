@@ -1,12 +1,37 @@
-import { Component, lazy } from 'solid-js';
+import {
+	Component,
+	For,
+	createSignal,
+	createUniqueId,
+	lazy
+} from 'solid-js';
 
 const MainLayout = lazy(
 	() => import('./components/layouts/MainLayout')
 );
-const Post = lazy(() => import('./components/Post'));
+const TweetPost = lazy(() => import('./components/tweets/TweetPost'));
 const Messenger = lazy(() => import('./components/Messenger'));
 
 const App: Component = () => {
+	const [content, setContent] = createSignal('');
+	const [tweets, setTweets] = createSignal<Tweet[]>([]);
+
+	const createTweet = () => {
+		const tweet = {
+			id: createUniqueId(),
+			content: content(),
+			user: {
+				nickName: 'Joy007',
+				avatar: '/images/joy-avatar.webp'
+			},
+			likesCount: 0,
+			subTweetsCount: 0,
+			date: new Date()
+		};
+		setTweets([tweet, ...tweets()]);
+		setContent('');
+	};
+
 	return (
 		<MainLayout>
 			<div class='flex-it py-1 px-4 flex-row'>
@@ -18,10 +43,23 @@ const App: Component = () => {
 						></img>
 					</div>
 				</div>
-				<Messenger />
+				<Messenger {...{ createTweet, content, setContent }} />
 			</div>
 			<div class='h-px bg-gray-700 my-1' />
-			<Post />
+			<For each={tweets()}>
+				{tweet => (
+					<TweetPost
+						{...{
+							id: tweet.id,
+							content: tweet.content,
+							user: tweet.user,
+							likesCount: tweet.likesCount,
+							subTweetsCount: tweet.subTweetsCount,
+							date: tweet.date
+						}}
+					/>
+				)}
+			</For>
 		</MainLayout>
 	);
 };

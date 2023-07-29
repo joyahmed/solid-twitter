@@ -1,11 +1,14 @@
 import { FaRegularImage } from 'solid-icons/fa';
 import { Component } from 'solid-js';
 
-const Messenger: Component = () => {
+const Messenger: Component<any> = ({createTweet, content, setContent}) => {
+
 	return (
 		<div class='flex-it flex-grow'>
 			<div class='flex-it'>
 				<textarea
+					value={content()}
+					onInput={e => setContent(e.currentTarget.value)}
 					name='content'
 					rows='1'
 					id='glide'
@@ -26,6 +29,7 @@ const Messenger: Component = () => {
 				</div>
 				<div class='flex-it w-32 mt-3 cursor-pointer'>
 					<button
+						onClick={createTweet}
 						type='button'
 						class='disabled:cursor-not-allowed disabled:bg-gray-400
               bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full flex-it transition duration-200'
