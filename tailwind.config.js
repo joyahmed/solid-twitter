@@ -19,6 +19,9 @@ module.exports = {
 			...defaultTheme.screens
 		},
 		extend: {
+			fontFamily: {
+				inter: ['Inter', 'sans-serif']
+			},
 			width: generateSizeClass(1024),
 			minHeight: generateSizeClass(1024, 0),
 			maxHeight: generateSizeClass(1024, 0),
