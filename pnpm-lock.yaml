@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@solidjs/router':
+    specifier: ^0.8.2
+    version: 0.8.2(solid-js@1.7.6)
   solid-icons:
     specifier: ^1.0.11
     version: 1.0.11(solid-js@1.7.6)
@@ -820,6 +823,14 @@ packages:
     dependencies:
       solid-js: 1.7.6
     dev: true
+
+  /@solidjs/router@0.8.2(solid-js@1.7.6):
+    resolution: {integrity: sha512-gUKW+LZqxtX6y/Aw6JKyy4gQ9E7dLqp513oB9pSYJR1HM5c56Pf7eijzyXX+b3WuXig18Cxqah4tMtF0YGu80w==}
+    peerDependencies:
+      solid-js: ^1.5.3
+    dependencies:
+      solid-js: 1.7.6
+    dev: false
 
   /@tailwindcss/forms@0.5.4(tailwindcss@3.3.3):
     resolution: {integrity: sha512-YAm12D3R7/9Mh4jFbYSMnsd6jG++8KxogWgqs7hbdo/86aWjjlIEvL7+QYdVELmAI0InXTpZqFIg5e7aDVWI2Q==}
