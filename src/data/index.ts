@@ -9,7 +9,7 @@ export const trends = [
 	{
 		category: 'Finance',
 		content: 'Bitcon down again!',
-		tweetCount: 200
+		tweetCount: randomize()
 	},
 	{
 		category: 'PC & Games',
