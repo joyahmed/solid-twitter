@@ -11,7 +11,7 @@ const MainSidebar: Component = () => {
 				<div class='h-full fixed flex-it top-0'>
 					<div class='flex-it h-full xl:w-80 w-20 overflow-hidden overflow-y-auto px-3 justify-between'>
 						<div class='flex-it items-start'>
-							<div class='p-3 pt-4 xl:pb-3 pb-0 xl:text-2xl text-sm font-bold transition duration-200 hover:opacity-80'>
+							<div class='hidden lg:flex p-3 pt-4 xl:pb-3 pb-0 xl:text-2xl text-sm font-bold transition duration-200 hover:opacity-80'>
 								<a href='#'>
 									<h1>Twitter</h1>
 								</a>

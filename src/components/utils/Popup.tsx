@@ -7,6 +7,7 @@ import {
 	onMount
 } from 'solid-js';
 import { Portal } from 'solid-js/web';
+import usePageSize from '../../hooks/usePageSize';
 
 interface PopupProps {
 	opener: Component;
@@ -19,18 +20,18 @@ const Popup: Component<PopupProps> = ({ opener: Opener }) => {
 	let popup: HTMLDivElement;
 
 	onMount(() => {
-		window.addEventListener('resize', adjustPopup);
 		window.addEventListener('click', closePopup);
 		window.addEventListener('keydown', handleKeyDown);
 	});
 
 	onCleanup(() => {
-		window.removeEventListener('resize', adjustPopup);
 		window.removeEventListener('click', closePopup);
 		window.addEventListener('keydown', handleKeyDown);
 	});
 
-	createEffect(() => isOpen() && adjustPopup());
+	createEffect(
+		() => isOpen() && usePageSize.value() && adjustPopup()
+	);
 
 	const adjustPopup = () => {
 		if (!popup) return;
@@ -40,9 +41,7 @@ const Popup: Component<PopupProps> = ({ opener: Opener }) => {
 	};
 
 	const closePopup = (e: MouseEvent) => {
-		if (isOpen() && !isPopupClicked(e)) {
-			setIsOpen(false);
-		}
+		if (isOpen() && !isPopupClicked(e)) setIsOpen(false);
 	};
 
 	const isPopupClicked = (e: MouseEvent) => {
