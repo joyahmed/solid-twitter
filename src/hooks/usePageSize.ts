@@ -18,7 +18,6 @@ const usePageSize = () => {
 
 	const handleResize = () => {
 		setValue(getClientSize());
-		console.log(`value => =>`, value());
 	};
 
 	const isXl = () => value().width > 1280;

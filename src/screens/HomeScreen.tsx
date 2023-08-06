@@ -3,8 +3,10 @@ import {
 	For,
 	createSignal,
 	createUniqueId,
-	lazy
+	lazy,
+	onMount
 } from 'solid-js';
+import { useAuth } from '../context/AuthContext';
 
 const MainLayout = lazy(
 	() => import('../components/layouts/MainLayout')
@@ -15,8 +17,11 @@ const TweetPost = lazy(
 const Messenger = lazy(() => import('../components/Messenger'));
 
 const HomeScreen: Component = () => {
+	const authState = useAuth();
 	const [content, setContent] = createSignal('');
 	const [tweets, setTweets] = createSignal<Tweet[]>([]);
+
+
 
 	const createTweet = () => {
 		const tweet = {
@@ -45,7 +50,13 @@ const HomeScreen: Component = () => {
 						></img>
 					</div>
 				</div>
-				<Messenger {...{ createTweet, content, setContent }} />
+				<Messenger
+					{...{
+						createTweet,
+						content,
+						setContent
+					}}
+				/>
 			</div>
 			<div class='h-px bg-gray-700 my-1' />
 			<For each={tweets()}>
