@@ -1,11 +1,12 @@
 import { A } from '@solidjs/router';
 import { Component } from 'solid-js';
-import useForm from '../hooks/useForm';
+import useForm, { firstUpperCaseLetter, maxLengthValidator } from '../hooks/useForm';
+
 
 const RegisterScreen: Component = () => {
-	const { handleChangeInput, handleSubmitForm } = useForm<RegisterForm>({
-		firstName: '',
-		lastName: '',
+	const { handleChangeInput, handleSubmitForm, validate } = useForm<RegisterForm>({
+		fullName: '',
+		userName: '',
 		email: '',
 		avatar: '',
 		password: '',
@@ -15,6 +16,8 @@ const RegisterScreen: Component = () => {
 	const onFormSubmit = (form: AuthForm) => {
 		console.log(form)
 	}
+
+
 
 	return (
 		<div class='flex flex-row justify-center items-center h-full'>
@@ -35,13 +38,14 @@ const RegisterScreen: Component = () => {
 									<div class='flex-it'>
 										<div class='flex-it py-2'>
 											<label class='block text-sm font-medium text-white'>
-												First Name
+												Full Name
 											</label>
 											<input
 												onInput={handleChangeInput}
+												use: validate={[maxLengthValidator, firstUpperCaseLetter]}
 												type='text'
-												name='firstName'
-												id='firstName'
+												name='fullName'
+												id='fullName'
 												class='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
 											/>
 											{/* <div class='flex-it grow text-xs bg-red-400 text-white p-3 pl-3 mt-1 rounded-md'>
@@ -51,13 +55,14 @@ const RegisterScreen: Component = () => {
 
 										<div class='flex-it py-2'>
 											<label class='block text-sm font-medium text-white'>
-												Last Name
+												User Name
 											</label>
 											<input
 												onInput={handleChangeInput}
+												use: validate={[maxLengthValidator]}
 												type='text'
-												name='lastName'
-												id='lastName'
+												name='userName'
+												id='userName'
 												class='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
 											/>
 										</div>
@@ -68,7 +73,7 @@ const RegisterScreen: Component = () => {
 											</label>
 											<input
 												onInput={handleChangeInput}
-												type='text'
+												type='email'
 												name='email'
 												id='email'
 												class='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'

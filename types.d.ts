@@ -1,34 +1,42 @@
-type User = {
-	nickName: string;
+interface User {
+	userName: string;
 	avatar: string;
-};
+}
 
-type Tweet = {
+interface Tweet {
 	id: string;
 	content: string;
 	user: User;
 	likesCount: number;
 	subTweetsCount: number;
 	date: Date;
-};
+}
 
-type InputEventProp = {
+interface InputEventProp {
 	currentTarget: HTMLInputElement;
 	target: Element;
-} & InputEvent;
+}
 
-type Form = { [key: string]: string };
+interface Form {
+	[key: string]: string;
+}
 
-type AuthForm = {
+interface AuthForm extends Form {
 	email: string;
 	password: string;
-} & Form;
+}
 
-type RegisterForm = {
-	firstName: string;
-	lastName: string;
+interface RegisterForm extends AuthForm {
+	fullName: string;
+	userName: string;
 	avatar: string;
 	passwordConfirmation: string;
-} & AuthForm;
+}
 
-type submitCallback<T extends Form> = (f: T) => any;
+interface SubmitCallback<T extends Form> {
+	(f: T): any;
+}
+
+interface Validator {
+	(element: HTMLInputElement, ...rest: any[]): string;
+}
