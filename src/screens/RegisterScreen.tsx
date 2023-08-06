@@ -1,18 +1,9 @@
 import { A } from '@solidjs/router';
-import { Component, createSignal } from 'solid-js';
-import { createStore } from 'solid-js/store';
-
-interface FormValues {
-	firstName: string;
-	lastName: string;
-	email: string;
-	avatar: string;
-	password: string;
-	passwordConfirmation: string;
-}
+import { Component } from 'solid-js';
+import useForm from '../hooks/useForm';
 
 const RegisterScreen: Component = () => {
-	const [form, setForm] = createStore<RegisterForm>({
+	const { handleChangeInput, handleSubmitForm } = useForm<RegisterForm>({
 		firstName: '',
 		lastName: '',
 		email: '',
@@ -21,15 +12,9 @@ const RegisterScreen: Component = () => {
 		passwordConfirmation: ''
 	});
 
-	const handleChangeInput = (e: InputEventProp) => {
-		const { name, value } = e.currentTarget;
-		setForm(name as keyof RegisterForm, value);
-	};
-
-	
-	const handleSubmitForm = () => {
-		console.log(form);
-	};
+	const onFormSubmit = (form: AuthForm) => {
+		console.log(form)
+	}
 
 	return (
 		<div class='flex flex-row justify-center items-center h-full'>
@@ -138,7 +123,7 @@ const RegisterScreen: Component = () => {
 								</div>
 								<div class='flex-it py-2'>
 									<button
-										onClick={handleSubmitForm}
+										onClick={(handleSubmitForm(onFormSubmit))}
 										type='button'
 										class='
 	                  bg-blue-400 hover:bg-blue-500 focus:ring-0
