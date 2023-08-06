@@ -1,7 +1,36 @@
 import { A } from '@solidjs/router';
-import { Component } from 'solid-js';
+import { Component, createSignal } from 'solid-js';
+import { createStore } from 'solid-js/store';
+
+interface FormValues {
+	firstName: string;
+	lastName: string;
+	email: string;
+	avatar: string;
+	password: string;
+	passwordConfirmation: string;
+}
 
 const RegisterScreen: Component = () => {
+	const [form, setForm] = createStore<RegisterForm>({
+		firstName: '',
+		lastName: '',
+		email: '',
+		avatar: '',
+		password: '',
+		passwordConfirmation: ''
+	});
+
+	const handleChangeInput = (e: InputEventProp) => {
+		const { name, value } = e.currentTarget;
+		setForm(name as keyof RegisterForm, value);
+	};
+
+	
+	const handleSubmitForm = () => {
+		console.log(form);
+	};
+
 	return (
 		<div class='flex flex-row justify-center items-center h-full'>
 			<div
@@ -21,12 +50,13 @@ const RegisterScreen: Component = () => {
 									<div class='flex-it'>
 										<div class='flex-it py-2'>
 											<label class='block text-sm font-medium text-white'>
-												Full Name
+												First Name
 											</label>
 											<input
+												onInput={handleChangeInput}
 												type='text'
-												name='fullName'
-												id='fullName'
+												name='firstName'
+												id='firstName'
 												class='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
 											/>
 											{/* <div class='flex-it grow text-xs bg-red-400 text-white p-3 pl-3 mt-1 rounded-md'>
@@ -36,12 +66,13 @@ const RegisterScreen: Component = () => {
 
 										<div class='flex-it py-2'>
 											<label class='block text-sm font-medium text-white'>
-												Nick Name
+												Last Name
 											</label>
 											<input
+												onInput={handleChangeInput}
 												type='text'
-												name='nickName'
-												id='nickName'
+												name='lastName'
+												id='lastName'
 												class='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
 											/>
 										</div>
@@ -51,6 +82,7 @@ const RegisterScreen: Component = () => {
 												Email
 											</label>
 											<input
+												onInput={handleChangeInput}
 												type='text'
 												name='email'
 												id='email'
@@ -63,6 +95,7 @@ const RegisterScreen: Component = () => {
 												Avatar
 											</label>
 											<input
+												onInput={handleChangeInput}
 												type='text'
 												name='avatar'
 												id='avatar'
@@ -75,6 +108,7 @@ const RegisterScreen: Component = () => {
 												Password
 											</label>
 											<input
+												onInput={handleChangeInput}
 												type='password'
 												name='password'
 												id='password'
@@ -87,6 +121,7 @@ const RegisterScreen: Component = () => {
 												Password Confirmation
 											</label>
 											<input
+												onInput={handleChangeInput}
 												type='password'
 												name='passwordConfirmation'
 												id='passwordConfirmation'
@@ -103,6 +138,7 @@ const RegisterScreen: Component = () => {
 								</div>
 								<div class='flex-it py-2'>
 									<button
+										onClick={handleSubmitForm}
 										type='button'
 										class='
 	                  bg-blue-400 hover:bg-blue-500 focus:ring-0
