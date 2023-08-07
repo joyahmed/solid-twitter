@@ -12,7 +12,7 @@ const TweetPost: Component<Tweet> = ({
 	date
 }) => {
 
-	const {avatar, nickName} = user
+	const {avatar, userName} = user
 	return (
 		<div class='flex-it p-4 border-b-1 border-solid border-gray-700'>
 			<div class='flex-it flex-row'>
@@ -25,12 +25,12 @@ const TweetPost: Component<Tweet> = ({
 					<div class='flex-it justify-center flex-grow mb-1'>
 						<div class='flex-it justify-between flex-row w-full'>
 							<div>
-								<span class='font-bold'>{nickName}</span>
+								<span class='font-bold'>{userName}</span>
 								<span class='mx-2'>&#8226;</span>
 								<span class='text-gray-400'>2h</span>
 							</div>
 							<div class='text-gray-400 cursor-pointer transition hover:text-red-400'>
-								<FiTrash size={16} />
+								<FiTrash size={16} style={{fill: '#fff'}} />
 							</div>
 						</div>
 					</div>
@@ -39,11 +39,11 @@ const TweetPost: Component<Tweet> = ({
 					</div>
 					<div class='flex-it flex-row flex-grow text-gray-400'>
 						<div class='flex-it flex-row items-center cursor-pointer mr-5 transition hover:text-blue-400'>
-							<AiOutlineMessage size={18} />
+							<AiOutlineMessage size={18} style={{fill: '#fff'}} />
 							<span class='text-xs ml-3'>{subTweetsCount}</span>
 						</div>
 						<div class='flex-it flex-row items-center cursor-pointer transition hover:text-pink-400'>
-							<FaRegularHeart size={18} />
+							<FaRegularHeart size={18} style={{fill: '#fff'}} />
 							<span class='text-xs ml-3'>{likesCount}</span>
 						</div>
 					</div>

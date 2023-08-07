@@ -26,17 +26,19 @@ const AuthProvider: ParentComponent = props => {
 	onMount(async () => {
 		try {
 			await authenticateUser();
+			setStore('isAuthenticated', false);
 		} catch (error: any) {
 			console.log(error);
+			setStore('isAuthenticated', false);
 		} finally {
 			setStore('isLoading', false);
 		}
 	});
 
 	const authenticateUser = async () => {
-		return new Promise(res => {
-			setStore('isAuthenticated', false);
-			res(true);
+		return new Promise((resolve, reject) => {
+			resolve(true);
+			//setStore('isAuthenticated', false);
 		});
 	};
 

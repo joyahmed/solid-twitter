@@ -1,5 +1,5 @@
 import { Accessor } from 'solid-js';
-import { createStore } from 'solid-js/store';
+import { createStore, produce } from 'solid-js/store';
 
 declare module 'solid-js' {
 	namespace JSX {
@@ -9,63 +9,75 @@ declare module 'solid-js' {
 	}
 }
 
-export const maxLengthValidator = <Validator>(
-	element: HTMLInputElement,
-	maxLength = 7
-) => {
-	const inputLength = element.value.length;
-
-	if (inputLength === 0 || inputLength < maxLength) return '';
-
-	return `${element.name} should be less than ${maxLength} characters`;
-};
-
-export const firstUpperCaseLetter = (element: HTMLInputElement) => {
-	const { value } = element;
-	if (value.length === 0) return '';
-
-	return value[0] !== value[0].toLocaleUpperCase()
-		? `${element.name} first letter should be uppercased`
-		: '';
-};
-
 const useForm = <T extends Form>(initialForm: T) => {
 	const [form, setForm] = createStore(initialForm);
-	const [errors, setErrors] = createStore<Form>();
+	const [errors, setErrors] = createStore<FormErrors>();
+
+	const validatorFields: { [key: string]: ValidatorConfig } = {};
+
+	const isValid = () => {
+		const keys = Object.keys(errors);
+		if (keys.length === 0) {
+			return false;
+		}
+		return !keys.some(errorKey => {
+			return errors[errorKey].length > 0;
+		});
+	};
 
 	const handleChangeInput = (e: InputEventProp) => {
 		const { name, value } = e.currentTarget;
 		setForm(name as any, value as any);
 	};
 
-	const handleSubmitForm = (callback: SubmitCallback<T>) => () => {
-		callback(form);
-	};
+	const handleSubmitForm =
+		(submitCallback: SubmitCallback<T>) => () => {
+			for (const field in validatorFields) {
+				const config = validatorFields[field];
+				checkValidity(config)();
+			}
+			isValid() && submitCallback(form);
+		};
 
 	const validate = (
 		ref: HTMLInputElement,
 		accessor: Accessor<Validator[]>
 	) => {
 		const validators = accessor() || [];
-		ref.onblur = checkValidity(ref, validators);
+		let config: ValidatorConfig;
+		validatorFields[ref.name] = config = { element: ref, validators };
+
+		ref.onblur = checkValidity(config);
+		ref.oninput = () => {
+			if (!errors[ref.name]) return;
+			checkValidity(config);
+		};
 	};
 
 	const checkValidity =
-		(element: HTMLInputElement, validators: Validator[]) => () => {
-			for (const validator of validators) {
-				const message = validator(element);
-				!!message
-					? setErrors(element.name, message)
-					: setErrors(element.name, '');
-			}
+		({ element, validators }: ValidatorConfig) =>
+		() => {
+			setErrors(element.name, []);
 
-			console.log(JSON.stringify(errors));
+			for (const validator of validators) {
+				const message = validator(element)(form);
+
+				if (!!message) {
+					setErrors(
+						produce(errors => {
+							errors[element.name].push(message);
+						})
+					);
+				}
+			}
 		};
 
 	return {
 		handleChangeInput,
 		handleSubmitForm,
-		validate
+		validate,
+		errors,
+		form
 	};
 };
 

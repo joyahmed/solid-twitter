@@ -3,11 +3,9 @@ import {
 	For,
 	createSignal,
 	createUniqueId,
-	lazy,
-	onMount
+	lazy
 } from 'solid-js';
-import { useAuth } from '../context/AuthContext';
-
+import { createStore, produce } from 'solid-js/store';
 const MainLayout = lazy(
 	() => import('../components/layouts/MainLayout')
 );
@@ -17,25 +15,29 @@ const TweetPost = lazy(
 const Messenger = lazy(() => import('../components/Messenger'));
 
 const HomeScreen: Component = () => {
-	const authState = useAuth();
 	const [content, setContent] = createSignal('');
-	const [tweets, setTweets] = createSignal<Tweet[]>([]);
-
-
+	const [tweets, setTweets] = createStore({
+		items: [] as Tweet[]
+	});
 
 	const createTweet = () => {
 		const tweet = {
 			id: createUniqueId(),
 			content: content(),
 			user: {
-				nickName: 'Joy007',
+				userName: 'Joy007',
 				avatar: '/images/joy-avatar.webp'
 			},
 			likesCount: 0,
 			subTweetsCount: 0,
 			date: new Date()
 		};
-		setTweets([tweet, ...tweets()]);
+
+		setTweets(
+			produce(tweets => {
+				tweets.items.unshift(tweet);
+			})
+		);
 		setContent('');
 	};
 
@@ -59,7 +61,7 @@ const HomeScreen: Component = () => {
 				/>
 			</div>
 			<div class='h-px bg-gray-700 my-1' />
-			<For each={tweets()}>
+			<For each={tweets.items}>
 				{tweet => (
 					<TweetPost
 						{...{
