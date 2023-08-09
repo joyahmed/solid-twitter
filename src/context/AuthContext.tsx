@@ -1,3 +1,4 @@
+import { useLocation, useNavigate } from '@solidjs/router';
 import { onAuthStateChanged } from 'firebase/auth';
 import {
 	ParentComponent,
@@ -8,6 +9,7 @@ import {
 } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { User } from '../../types/User';
+import { getUser } from '../api/auth';
 import { firebaseAuth } from '../db';
 import Loader from '../utils/Loader';
 
@@ -26,31 +28,34 @@ const initialState = () => ({
 const AuthContext = createContext<AuthContextValues>();
 
 const AuthProvider: ParentComponent = props => {
-	const [store, setStore] = createStore(initialState());
+	const [store, setStore] = createStore<AuthContextValues>(
+		initialState()
+	);
+	const location = useLocation();
+	const navigate = useNavigate();
 
 	onMount(() => {
-		setStore('isLoading', true);
+		setStore({ isLoading: true });
 		listenToAuthChanges();
 	});
 
-	// const listenToAuthChanges = () => {
-	// 	onAuthStateChanged(firebaseAuth, user => {
-
-	// 		!!user
-	// 			? (setStore('isAuthenticated', true),
-	// 			  setStore('user', user as any))
-	// 			: (setStore('isAuthenticated', false),
-	// 			  setStore('user', null));
-	// 	});
-
-	// 	setStore('isLoading', false);
-	// };
-
 	const listenToAuthChanges = () => {
-		onAuthStateChanged(firebaseAuth, user => {
+		onAuthStateChanged(firebaseAuth, async user => {
+			if (!!user) {
+				const twitterUser = await getUser(user.uid);
+				setStore({
+					isAuthenticated: true,
+					user: twitterUser
+				});
+				location.pathname.includes('/auth') &&
+					navigate('/', { replace: true });
+			} else {
+				setStore({
+					isAuthenticated: false,
+					user: null
+				});
+			}
 			setStore({
-				isAuthenticated: !!user,
-				user: user as any,
 				isLoading: false
 			});
 		});

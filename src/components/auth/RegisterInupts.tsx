@@ -28,7 +28,7 @@ const RegisterInputs: Component<RegisterInputsProps> = ({
 }: RegisterInputsProps) => {
 	const { show, togglePassText } = usePasswordVisibilityToggle();
 	const inputClass =
-		'mt-1 block w-full h-9 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm';
+		'mt-1 block w-full h-9 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-transparent text-white';
 
 	return (
 		<>

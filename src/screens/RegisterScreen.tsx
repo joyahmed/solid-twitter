@@ -1,7 +1,7 @@
 import { A } from '@solidjs/router';
 import { Component, lazy } from 'solid-js';
+import useAuthenticate from '../hooks/useAuthenticate';
 import useForm from '../hooks/useForm';
-import useRegister from '../hooks/useRegister';
 const SubmitButton = lazy(
 	() => import('../components/auth/SubmitButton')
 );
@@ -10,7 +10,7 @@ const RegisterInputs = lazy(
 );
 
 const RegisterScreen: Component = () => {
-	const { registerUser } = useRegister();
+	const { authenticateuser, isLoading } = useAuthenticate('register');
 	const { handleChangeInput, handleSubmitForm, validate, errors } =
 		useForm<RegisterForm>({
 			fullName: '',
@@ -22,7 +22,7 @@ const RegisterScreen: Component = () => {
 		});
 
 	const onFormSubmit = (form: RegisterForm) => {
-		registerUser(form);
+		authenticateuser(form);
 	};
 
 	return (
@@ -55,6 +55,7 @@ const RegisterScreen: Component = () => {
 							</div>
 							<SubmitButton
 								{...{
+									disabled: isLoading(),
 									handleSubmitForm,
 									onFormSubmit,
 									text: 'Register'

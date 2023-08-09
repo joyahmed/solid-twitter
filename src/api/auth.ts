@@ -3,7 +3,7 @@ import {
 	signInWithEmailAndPassword,
 	signOut
 } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 import { User } from '../../types/User';
 import { db, firebaseAuth } from '../db';
@@ -43,8 +43,20 @@ const login = async (loginForm: AuthForm) => {
 	return user;
 };
 
+const authenticate = (form: AuthForm, type: AuthType) => {
+	return type === 'login'
+		? login(form)
+		: register(form as RegisterForm);
+};
+
 const logout = () => {
 	return signOut(firebaseAuth);
 };
 
-export { login, logout, register };
+const getUser = async (uid: string) => {
+	const documentRef = doc(db, 'users', uid);
+	const documentSnapshot = await getDoc(documentRef);
+	return documentSnapshot.data() as User;
+};
+
+export { authenticate, logout, getUser };

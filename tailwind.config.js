@@ -29,6 +29,22 @@ module.exports = {
 			minWidth: generateSizeClass(1024, 0),
 			borderWidth: {
 				1: '1px'
+			},
+			animation: {
+				'loader-border': 'loaderBorder 1.5s linear infinite',
+				'loader-text': 'loaderText 1.5s linear infinite'
+			},
+			keyframes: {
+				loaderBorder: {
+					'0%': { borderColor: 'white' },
+					'50%': { borderColor: '#737ccf' },
+					'100%': { transform: 'rotate(360deg)' }
+				},
+
+				loaderText: {
+					'0%, 100%': { transform: 'scale(0)', opacity: 0 },
+					'50%': { transform: 'scale(1)', opacity: 1 }
+				}
 			}
 		}
 	},

@@ -52,4 +52,4 @@ interface ValidatorConfig {
 	validators: Validator[];
 }
 
-
+type AuthType = 'register' | 'login'

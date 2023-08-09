@@ -80,7 +80,7 @@ body {
 	}
 
 	::-webkit-scrollbar {
-		@apply w-[8.5px] h-2.5 rounded-md;
+		@apply w-3 h-3 rounded-md;
 	}
 
 	/* Track */
@@ -90,7 +90,7 @@ body {
 
 	/* Handle */
 	::-webkit-scrollbar-thumb {
-		@apply rounded-md shadow-sm hover:bg-gray-700 bg-white;
+		@apply rounded-md shadow-sm hover:bg-gray-700 bg-gray-600 transition;
 	}
 
 	/* Handle on hover */
@@ -105,78 +105,6 @@ body {
 
 .popup {
 	backface-visibility: hidden;
-}
-
-@-webkit-keyframes rotating /* Safari and Chrome */ {
-	from {
-		-webkit-transform: rotate(0deg);
-		-o-transform: rotate(0deg);
-		transform: rotate(0deg);
-	}
-	to {
-		-webkit-transform: rotate(360deg);
-		-o-transform: rotate(360deg);
-		transform: rotate(360deg);
-	}
-}
-@keyframes rotating {
-	from {
-		-ms-transform: rotate(0deg);
-		-moz-transform: rotate(0deg);
-		-webkit-transform: rotate(0deg);
-		-o-transform: rotate(0deg);
-		transform: rotate(0deg);
-	}
-	to {
-		-ms-transform: rotate(360deg);
-		-moz-transform: rotate(360deg);
-		-webkit-transform: rotate(360deg);
-		-o-transform: rotate(360deg);
-		transform: rotate(360deg);
-	}
-}
-.rotating {
-	-webkit-animation: rotating 2s linear infinite;
-	-moz-animation: rotating 2s linear infinite;
-	-ms-animation: rotating 2s linear infinite;
-	-o-animation: rotating 2s linear infinite;
-	animation: rotating 2s linear infinite;
-}
-
-.lds-ring {
-	display: inline-block;
-	position: relative;
-	width: 80px;
-	height: 80px;
-}
-.lds-ring div {
-	box-sizing: border-box;
-	display: block;
-	position: absolute;
-	width: 32px;
-	height: 32px;
-	margin: 4px;
-	border: 4px solid #fff;
-	border-radius: 50%;
-	animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-	border-color: #fff transparent transparent transparent;
-}
-.lds-ring div:nth-child(1) {
-	animation-delay: -0.45s;
-}
-.lds-ring div:nth-child(2) {
-	animation-delay: -0.3s;
-}
-.lds-ring div:nth-child(3) {
-	animation-delay: -0.15s;
-}
-@keyframes lds-ring {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
 }
 
 #upload-image {

@@ -1,7 +1,7 @@
 import { A } from '@solidjs/router';
 import { Component, lazy } from 'solid-js';
+import useAuthenticate from '../hooks/useAuthenticate';
 import useForm from '../hooks/useForm';
-import useLogin from '../hooks/useLogin';
 import usePasswordVisibilityToggle from '../hooks/usePasswordVisibilityToggle';
 import {
 	emailValidate,
@@ -18,7 +18,7 @@ const FormError = lazy(() => import('../components/utils/FormError'));
 const TogglePassword = lazy(() => import('../utils/TogglePassword'));
 
 const LoginScreen: Component = () => {
-	const { loginUser } = useLogin();
+	const { authenticateuser, isLoading } = useAuthenticate('login');
 	const { handleChangeInput, handleSubmitForm, validate, errors } =
 		useForm<AuthForm>({
 			email: '',
@@ -27,7 +27,7 @@ const LoginScreen: Component = () => {
 	const { show, togglePassText } = usePasswordVisibilityToggle();
 
 	const onFormSubmit = (form: AuthForm) => {
-		loginUser(form);
+		authenticateuser(form);
 	};
 
 	const inputClass =
@@ -84,6 +84,7 @@ const LoginScreen: Component = () => {
 						</div>
 						<SubmitButton
 							{...{
+								disabled: isLoading(),
 								handleSubmitForm,
 								onFormSubmit,
 								text: 'Login'

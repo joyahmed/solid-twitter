@@ -2,16 +2,19 @@ interface SubmitButtonProps<T extends Form> {
 	handleSubmitForm: (submitCallback: SubmitCallback<T>) => () => void;
 	onFormSubmit: (form: T) => void;
 	text: string;
+	disabled: boolean;
 }
 
 const SubmitButton = <T extends Form>({
 	handleSubmitForm,
 	onFormSubmit,
-	text
+	text,
+	disabled
 }: SubmitButtonProps<T>) => {
 	return (
 		<div class='flex-it py-2'>
 			<button
+				disabled={disabled}
 				onClick={handleSubmitForm(onFormSubmit)}
 				type='button'
 				class='
