@@ -41,16 +41,15 @@ interface SubmitCallback<T extends Form> {
 	(f: T): any;
 }
 
-// interface Validator {
-// 	(element: HTMLInputElement, ...rest: any[]): string;
-// }
-
-type Validator = (
-	element: HTMLInputElement,
-	...rest: any[]
-) => (form: Form) => string | null;
+interface Validator {
+	(element: HTMLInputElement, ...rest: any[]): (
+		form: Form
+	) => string | null;
+}
 
 interface ValidatorConfig {
 	element: HTMLInputElement;
 	validators: Validator[];
 }
+
+

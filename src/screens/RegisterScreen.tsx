@@ -1,14 +1,16 @@
 import { A } from '@solidjs/router';
-import { Component, lazy, onMount } from 'solid-js';
+import { Component, lazy } from 'solid-js';
 import useForm from '../hooks/useForm';
-import useRegister from '../hooks/useRegistrater';
-// import { getUsers } from '../db';
+import useRegister from '../hooks/useRegister';
+const SubmitButton = lazy(
+	() => import('../components/auth/SubmitButton')
+);
 const RegisterInputs = lazy(
-	() => import('../components/register/RegisterInupts')
+	() => import('../components/auth/RegisterInupts')
 );
 
 const RegisterScreen: Component = () => {
-	const { register } = useRegister();
+	const { registerUser } = useRegister();
 	const { handleChangeInput, handleSubmitForm, validate, errors } =
 		useForm<RegisterForm>({
 			fullName: '',
@@ -19,14 +21,8 @@ const RegisterScreen: Component = () => {
 			passwordConfirmation: ''
 		});
 
-	onMount(async () => {
-		// const users = await getUsers()
-
-		// console.log(`users => =>`, users);
-	})
-
 	const onFormSubmit = (form: RegisterForm) => {
-		register(form)
+		registerUser(form);
 	};
 
 	return (
@@ -57,18 +53,13 @@ const RegisterScreen: Component = () => {
 									Go to Login
 								</A>
 							</div>
-							<div class='flex-it py-2'>
-								<button
-									onClick={handleSubmitForm(onFormSubmit)}
-									type='button'
-									class='
-	                  bg-blue-400 hover:bg-blue-500 focus:ring-0
-	                  disabled:cursor-not-allowed disabled:bg-gray-400
-	                  inline-flex justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-offset-2'
-								>
-									Register
-								</button>
-							</div>
+							<SubmitButton
+								{...{
+									handleSubmitForm,
+									onFormSubmit,
+									text: 'Register'
+								}}
+							/>
 						</form>
 					</div>
 				</div>

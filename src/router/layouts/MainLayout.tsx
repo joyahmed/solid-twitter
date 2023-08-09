@@ -3,8 +3,8 @@ import { Component, onMount } from 'solid-js';
 import { useAuth } from '../../context/AuthContext';
 
 const MainLayout: Component = () => {
-	const navigate = useNavigate();
 	const authState = useAuth()!;
+	const navigate = useNavigate();
 
 	onMount(() => {
 		if (!authState.isAuthenticated) {
@@ -12,9 +12,7 @@ const MainLayout: Component = () => {
 		}
 	});
 
-	if (!authState.isAuthenticated) {
-		return null;
-	}
+	if (!authState.isAuthenticated) return null;
 
 	return <Outlet />;
 };

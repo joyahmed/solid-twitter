@@ -1,12 +1,15 @@
 import { Accessor, Component, lazy } from 'solid-js';
+import usePasswordVisibilityToggle from '../../hooks/usePasswordVisibilityToggle';
 import {
 	comparePassword,
 	emailValidate,
 	firstUpperCaseLetter,
 	minLengthValidator,
 	passwordValidate,
-	requiredValidator,
+	requiredValidator
 } from '../../hooks/useValidators';
+import TogglePassword from '../../utils/TogglePassword';
+import LabelComponent from './LabelComponent';
 const FormError = lazy(() => import('../utils/FormError'));
 
 interface RegisterInputsProps {
@@ -23,6 +26,7 @@ const RegisterInputs: Component<RegisterInputsProps> = ({
 	onInput,
 	errors
 }: RegisterInputsProps) => {
+	const { show, togglePassText } = usePasswordVisibilityToggle();
 	const inputClass =
 		'mt-1 block w-full h-9 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm';
 
@@ -39,7 +43,7 @@ const RegisterInputs: Component<RegisterInputsProps> = ({
 					]}
 					type='text'
 					name='fullName'
-					class={`inputClass`}
+					class={`${inputClass}`}
 				/>
 				<FormError>{errors['fullName']}</FormError>
 			</div>
@@ -50,13 +54,13 @@ const RegisterInputs: Component<RegisterInputsProps> = ({
 					onInput={onInput}
 					use:validate={[
 						requiredValidator,
-						ele => minLengthValidator(ele, 4)
+						ele => minLengthValidator(ele, 3)
 					]}
 					type='text'
-					name='nickName'
+					name='userName'
 					class={`${inputClass}`}
 				/>
-				<FormError>{errors['nickName']}</FormError>
+				<FormError>{errors['userName']}</FormError>
 			</div>
 
 			<div class='flex-it py-1'>
@@ -72,41 +76,46 @@ const RegisterInputs: Component<RegisterInputsProps> = ({
 			</div>
 
 			<div class='flex-it py-1'>
-				<LabelComponent {...{ text: 'Avatar' }} />
-				<input
-					use:validate={[requiredValidator]}
-					onInput={onInput}
-					type='text'
-					name='avatar'
-					class={`${inputClass}`}
-				/>
-				<FormError>{errors['avatar']}</FormError>
-			</div>
-
-			<div class='flex-it py-1'>
 				<LabelComponent {...{ text: 'Password' }} />
-				<input
-					use:validate={[requiredValidator, passwordValidate]}
-					onInput={onInput}
-					type='password'
-					name='password'
-					class={`${inputClass}`}
-				/>
+				<div class='relative'>
+					<input
+						use:validate={[requiredValidator, passwordValidate]}
+						onInput={onInput}
+						type={`${show.showPassword ? 'text' : 'password'}`}
+						name='password'
+						class={`${inputClass}`}
+					/>
+					<TogglePassword
+						{...{
+							variant: () => show.showPassword,
+							onClick: () => togglePassText('showPassword')
+						}}
+					/>
+				</div>
 				<FormError>{errors['password']}</FormError>
 			</div>
 
 			<div class='flex-it py-1'>
 				<LabelComponent {...{ text: 'Password Confirmation' }} />
-				<input
-					use:validate={[
-						requiredValidator,
-						element => comparePassword(element, 'password')
-					]}
-					onInput={onInput}
-					type='password'
-					name='passwordConfirmation'
-					class={`${inputClass}`}
-				/>
+				<div class='relative'>
+					<input
+						use:validate={[
+							requiredValidator,
+							element => comparePassword(element, 'password')
+						]}
+						onInput={onInput}
+						type={`${show.showConfirmPassword ? 'text' : 'password'}`}
+						name='passwordConfirmation'
+						class={`${inputClass}`}
+					/>
+
+					<TogglePassword
+						{...{
+							variant: () => show.showConfirmPassword,
+							onClick: () => togglePassText('showConfirmPassword')
+						}}
+					/>
+				</div>
 				<FormError>{errors['passwordConfirmation']}</FormError>
 			</div>
 		</>
@@ -115,10 +124,4 @@ const RegisterInputs: Component<RegisterInputsProps> = ({
 
 export default RegisterInputs;
 
-interface LabelComponentProps {
-	text: string;
-}
 
-const LabelComponent = ({ text }: LabelComponentProps) => (
-	<label class='block text-sm font-medium text-white'>{text}</label>
-);
